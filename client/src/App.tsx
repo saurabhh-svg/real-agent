@@ -37,7 +37,7 @@ import {
 } from "pages/products";
 import { BrowserRouter, Outlet, Route, Routes } from "react-router-dom";
 import { parseJwt } from "utils/parse-jwt";
-import { Header } from "./components/layouts/header";
+import { Header, Sider, Title } from "./components/layouts/";
 import { ColorModeContextProvider } from "./contexts/color-mode";
 
 const axiosInstance = axios.create();
@@ -208,6 +208,9 @@ function App() {
                   element={
                     <Authenticated>
                       <Layout Header={Header}>
+                        <Outlet />
+                      </Layout>
+                      <Layout Sider={Sider}>
                         <Outlet />
                       </Layout>
                     </Authenticated>

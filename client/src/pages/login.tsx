@@ -2,10 +2,6 @@ import { useLogin } from "@refinedev/core";
 import { useEffect, useRef } from "react";
 import { CredentialResponse } from "../interfaces/google";
 
-// Todo: Update your Google Client ID here
-const GOOGLE_CLIENT_ID =
-  "1041339102270-jlljcjl19jo1hkgf695em3ibr7q2m734.apps.googleusercontent.com";
-
 export const Login: React.FC = () => {
   const { mutate: login } = useLogin<CredentialResponse>();
 
@@ -20,7 +16,7 @@ export const Login: React.FC = () => {
       try {
         window.google.accounts.id.initialize({
           ux_mode: "popup",
-          client_id: GOOGLE_CLIENT_ID,
+          client_id: process.env.REACT_APP_GOOGLE_CLIENT_ID,
           callback: async (res: CredentialResponse) => {
             if (res.credential) {
               login(res);
