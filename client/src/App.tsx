@@ -37,7 +37,7 @@ import {
 } from "pages/products";
 import { BrowserRouter, Outlet, Route, Routes } from "react-router-dom";
 import { parseJwt } from "utils/parse-jwt";
-import { Header } from "./components/header";
+import { Header } from "./components/layouts/header";
 import { ColorModeContextProvider } from "./contexts/color-mode";
 
 const axiosInstance = axios.create();
