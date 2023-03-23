@@ -29,10 +29,11 @@ import {
   ProductList,
   ProductShow,
 } from "pages/products";
+import { useTranslation } from "react-i18next";
 import { BrowserRouter, Outlet, Route, Routes } from "react-router-dom";
 import { parseJwt } from "utils/parse-jwt";
-import { Header, Sider, Title } from "./components/layouts/";
 import { ColorModeContextProvider } from "./contexts/color-mode";
+import { Sider, Title, Header } from "./components/layout";
 
 const axiosInstance = axios.create();
 axiosInstance.interceptors.request.use((request: AxiosRequestConfig) => {
@@ -49,6 +50,8 @@ axiosInstance.interceptors.request.use((request: AxiosRequestConfig) => {
 });
 
 function App() {
+  const { t, i18n } = useTranslation();
+
   const authProvider: AuthBindings = {
     login: async ({ credential }: CredentialResponse) => {
       const profileObj = credential ? parseJwt(credential) : null;
@@ -122,6 +125,12 @@ function App() {
     },
   };
 
+  const i18nProvider = {
+    translate: (key: string, params: object) => t(key, params),
+    changeLocale: (lang: string) => i18n.changeLanguage(lang),
+    getLocale: () => i18n.language,
+  };
+
   return (
     <BrowserRouter>
       <GitHubBanner />
@@ -135,6 +144,7 @@ function App() {
               notificationProvider={notificationProvider}
               routerProvider={routerBindings}
               authProvider={authProvider}
+              i18nProvider={i18nProvider}
               resources={[
                 {
                   name: "products",
@@ -157,6 +167,12 @@ function App() {
                   element={
                     <Authenticated fallback={<CatchAllNavigate to="/login" />}>
                       <Layout Header={Header}>
+                        <Outlet />
+                      </Layout>
+                      <Layout Sider={Sider}>
+                        <Outlet />
+                      </Layout>
+                      <Layout Title={Title}>
                         <Outlet />
                       </Layout>
                     </Authenticated>
@@ -186,9 +202,6 @@ function App() {
                   element={
                     <Authenticated>
                       <Layout Header={Header}>
-                        <Outlet />
-                      </Layout>
-                      <Layout Sider={Sider}>
                         <Outlet />
                       </Layout>
                     </Authenticated>
